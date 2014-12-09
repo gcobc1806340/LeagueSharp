@@ -12,7 +12,7 @@ namespace WhereDidHeGo
 		public float Radius;
 		public float Delay;
 		public bool Casted;
-		public int TimeCasted;
+		public float TimeCasted;
 		public Vector3 StartPos;
 		public Vector3 EndPos;
 		public Obj_AI_Hero CastingHero;
@@ -26,7 +26,7 @@ namespace WhereDidHeGo
 		                 float radius,
 		                 float delay,
 		                 bool casted,
-		                 int timeCasted,
+		                 float timeCasted,
 		                 Obj_AI_Hero castingHero,
 		                 string shortName)
 		{

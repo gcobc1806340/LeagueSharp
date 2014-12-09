@@ -14,7 +14,7 @@ namespace WhereDidHeGo
 	{
 		private static List<SpellData> Spells = new List<SpellData>();
 		private static Menu Config;
-		private static int vayneUltEndTick = 0;
+		private static float vayneUltEndTick = 0;
 		private static int shacoIndex = -1;
 		
 		private static void Main(string[] args)
@@ -29,76 +29,70 @@ namespace WhereDidHeGo
 				foreach (SpellDataInst spell in hero.SummonerSpellbook.Spells)
 				{
 					if (spell.Name.Contains("flash"))
+					{
 						Spells.Add(new SpellData("summonerflash", 400, 0, 0, false, 0, hero, "Flash"));
+						break;
+					}
 				}
-				switch (hero.ChampionName)
+				if (hero.ChampionName ==  "Aatrox")
+					Spells.Add(new SpellData("AatroxQ", 650, 275, 1, false, 0, hero, "Q"));
+				else if (hero.ChampionName ==  "Ahri")
+					Spells.Add(new SpellData("AhriTumble", 450, 0, 0.6f, false, 0, hero, "R"));
+				else if (hero.ChampionName == "Akali")
+					Spells.Add(new SpellData("AkaliShadowDance", 800, 0, 0.5f, false, 0, hero, "R"));
+				else if (hero.ChampionName == "Ezreal")
+					Spells.Add(new SpellData("EzrealArcaneShift", 475, 0, 0, false, 0, hero, "E"));
+				else if (hero.ChampionName == "Fiora")
 				{
-					case "Aatrox":
-						Spells.Add(new SpellData("AatroxQ", 650, 275, 1, false, 0, hero, "Q"));
-						break;
-					case "Ahri":
-						Spells.Add(new SpellData("AhriTumble", 450, 0, 0.6f, false, 0, hero, "R"));
-						break;
-					case "Akali":
-						Spells.Add(new SpellData("AkaliShadowDance", 800, 0, 0.5f, false, 0, hero, "R"));
-						break;
-					case "Ezreal":
-						Spells.Add(new SpellData("EzrealArcaneShift", 475, 0, 0, false, 0, hero, "E"));
-						break;
-					case "Fiora":
-						Spells.Add(new SpellData("FioraDance", 700, 0, 1, false, 0, hero, "R"));
-						Spells[Spells.Count()-1].TargetDead = false;
-						break;
-					case "Kassadin":
-						Spells.Add(new SpellData("RiftWalk", 700, 0, 0, false, 0, hero, "R"));
-						break;
-					case "Katarina":
-						Spells.Add(new SpellData("KatarinaE", 700, 0, 0, false, 0, hero, "E"));
-						break;
-					case "Khazix":
-						Spells.Add(new SpellData("KhazixE", 600, 0, 0.9f, false, 0, hero, "E"));
-						Spells.Add(new SpellData("khazixelong", 900, 0, 1, false, 0, hero, "R"));
-						break;
-					case "Leblanc":
-						Spells.Add(new SpellData("LeblancSlide", 600, 0, 0.5f, false, 0, hero, "W"));
-						Spells.Add(new SpellData("leblancslidereturn", 0, 0, 0, false, 0, hero, "W(R)"));
-						Spells.Add(new SpellData("LeblancSlideM", 600, 0, 0.5f, false, 0, hero, "W+"));
-						Spells.Add(new SpellData("leblancslidereturnm", 0, 0, 0, false, 0, hero, "W+(R)"));
-						break;
-					case "Lissandra":
-						Spells.Add(new SpellData("LissandraE", 700, 0, 0, false, 0, hero, "E"));
-						break;
-					case "MasterYi":
-						Spells.Add(new SpellData("AlphaStrike", 600, 0, 0.9f, false, 0, hero, "Q"));
-						Spells[Spells.Count()-1].TargetDead = false;
-						break;
-					case "Shaco":
-						Spells.Add(new SpellData("Deceive", 400, 0, 0, false, 0, hero, "Q"));						
-						Spells[Spells.Count()-1].OutOfBush = false;
-						shacoIndex = Spells.Count()-1;
-						break;
-					case "Talon":
-						Spells.Add(new SpellData("TalonCutthroat", 700, 0, 0, false, 0, hero, "E"));
-						break;
-					case "Tryndamere":
-						Spells.Add(new SpellData("Slash", 600, 0, 0.9f, false, 0, hero, "E"));
-						break;
-					case "Tristana":
-						Spells.Add(new SpellData("RocketJump", 900, 200, 1.1f, false, 0, hero, "W"));
-						break;
-					case "Vayne":
-						Spells.Add(new SpellData("VayneTumble", 250, 0, 0, false, 0, hero, "Q"));
-						vayneUltEndTick = 1;
-						break;
-					case "Zac":
-						Spells.Add(new SpellData("ZacE", 1550, 200, 1500, false, 0, hero, "E"));
-						break;
-					case "Zed":
-						Spells.Add(new SpellData("ZedShadowDash", 999, 0, 0, false, 0, hero, "W"));
-						break;
+					Spells.Add(new SpellData("FioraDance", 700, 0, 1, false, 0, hero, "R"));
+					Spells[Spells.Count-1].TargetDead = false;
 				}
+				else if (hero.ChampionName == "Kassadin")
+					Spells.Add(new SpellData("RiftWalk", 700, 0, 0, false, 0, hero, "R"));
+				else if (hero.ChampionName == "Katarina")
+					Spells.Add(new SpellData("KatarinaE", 700, 0, 0, false, 0, hero, "E"));
+				else if (hero.ChampionName == "Khazix")
+				{
+					Spells.Add(new SpellData("KhazixE", 600, 0, 0.9f, false, 0, hero, "E"));
+					Spells.Add(new SpellData("khazixelong", 900, 0, 1, false, 0, hero, "R"));
+				}
+				else if (hero.ChampionName == "Leblanc")
+				{
+					Spells.Add(new SpellData("LeblancSlide", 600, 0, 0.5f, false, 0, hero, "W"));
+					Spells.Add(new SpellData("leblancslidereturn", 0, 0, 0, false, 0, hero, "W(R)"));
+					Spells.Add(new SpellData("LeblancSlideM", 600, 0, 0.5f, false, 0, hero, "W+"));
+					Spells.Add(new SpellData("leblancslidereturnm", 0, 0, 0, false, 0, hero, "W+(R)"));
+				}
+				else if (hero.ChampionName == "Lissandra")
+					Spells.Add(new SpellData("LissandraE", 700, 0, 0, false, 0, hero, "E"));
+				else if (hero.ChampionName == "MasterYi")
+				{
+					Spells.Add(new SpellData("AlphaStrike", 600, 0, 0.9f, false, 0, hero, "Q"));
+					Spells[Spells.Count - 1].TargetDead = false;
+				}
+				else if (hero.ChampionName == "Shaco")
+				{
+					Spells.Add(new SpellData("Deceive", 400, 0, 0, false, 0, hero, "Q"));
+					Spells[Spells.Count-1].OutOfBush = false;
+					shacoIndex = Spells.Count - 1;
+				}
+				else if (hero.ChampionName == "Talon")
+					Spells.Add(new SpellData("TalonCutthroat", 700, 0, 0, false, 0, hero, "E"));
+				else if (hero.ChampionName == "Tryndamere")
+					Spells.Add(new SpellData("Slash", 600, 0, 0.9f, false, 0, hero, "E"));
+				else if (hero.ChampionName == "Tristana")
+					Spells.Add(new SpellData("RocketJump", 900, 200, 1.1f, false, 0, hero, "W"));
+				else if (hero.ChampionName == "Vayne")
+				{
+					Spells.Add(new SpellData("VayneTumble", 250, 0, 0, false, 0, hero, "Q"));
+					vayneUltEndTick = 1;
+				}
+				else if (hero.ChampionName == "Zac")
+					Spells.Add(new SpellData("ZacE", 1550, 200, 1500, false, 0, hero, "E"));
+				else if (hero.ChampionName == "Zed")
+					Spells.Add(new SpellData("ZedShadowDash", 999, 0, 0, false, 0, hero, "W"));
 			}
-			if (Spells.Count() > 0)
+			if (Spells.Count > 0)
 			{
 				Config = new Menu("Where Did He Go", "Where Did He Go", true);
 				Config.AddSubMenu(new Menu("Settings", "Settings"));
@@ -177,7 +171,7 @@ namespace WhereDidHeGo
 			{
 				if (vayneUltEndTick > 0 && args.SData.Name == "vayneinquisition")
 				{
-					vayneUltEndTick = (int) Game.Time + 6 + 2*args.Level;
+					vayneUltEndTick = Game.Time + 6 + 2*args.Level;
 					return;
 				}
 				
@@ -223,7 +217,7 @@ namespace WhereDidHeGo
 							SetNormalEndPosition(i,args);
 						}
 						Spells[i].Casted = true;
-						Spells[i].TimeCasted = (int)Game.Time;
+						Spells[i].TimeCasted = Game.Time;
 						break;
 					}
 				}
@@ -286,7 +280,7 @@ namespace WhereDidHeGo
 				Spells[shacoIndex].StartPos = sender.Position;
 				Spells[shacoIndex].EndPos = sender.Position;
 				Spells[shacoIndex].Casted = true;
-				Spells[shacoIndex].TimeCasted = (int) Game.Time;
+				Spells[shacoIndex].TimeCasted = Game.Time;
 				Spells[shacoIndex].OutOfBush = true;
 			}
 		}
@@ -351,8 +345,8 @@ namespace WhereDidHeGo
 			{
 				if (Spells[i].Casted)
 				{
-					var lineStartPos = Drawing.WorldToScreen(Spells[i].StartPos);
-					var lineEndPos = Drawing.WorldToScreen(Spells[i].EndPos);
+					Vector2 lineStartPos = Drawing.WorldToScreen(Spells[i].StartPos);
+					Vector2 lineEndPos = Drawing.WorldToScreen(Spells[i].EndPos);
 					float size = 100;
 					if (Spells[i].Radius > 0 && Game.Time < Spells[i].TimeCasted + Spells[i].Delay) size = Spells[i].Radius;
 					if (Spells[i].OutOfBush) Utility.DrawCircle(Spells[i].EndPos, Spells[i].MaxRange, Color.Red);
@@ -362,7 +356,7 @@ namespace WhereDidHeGo
 						Drawing.DrawLine(lineStartPos,lineEndPos, 2.0f, Color.Blue);
 					}
 					int offset = 30;
-					var infoText = Spells[i].CastingHero.ChampionName + " " + Spells[i].ShortName;
+					string infoText = Spells[i].CastingHero.ChampionName + " " + Spells[i].ShortName;
 					Drawing.DrawLine(lineEndPos.X, lineEndPos.Y, lineEndPos.X + offset, lineEndPos.Y - offset, 1.0f, Color.Red);
 					Drawing.DrawLine(lineEndPos.X + offset, lineEndPos.Y - offset, lineEndPos.X + offset + 6 * infoText.Length, lineEndPos.Y - offset, 1.0f, Color.Red);
 					Drawing.DrawText(lineEndPos.X + offset + 1, lineEndPos.Y - offset, Color.Bisque,infoText);
