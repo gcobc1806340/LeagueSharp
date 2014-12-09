@@ -43,10 +43,7 @@ namespace WhereDidHeGo
 				else if (hero.ChampionName == "Ezreal")
 					Spells.Add(new SpellData("EzrealArcaneShift", 475, 0, 0, false, 0, hero, "E"));
 				else if (hero.ChampionName == "Fiora")
-				{
 					Spells.Add(new SpellData("FioraDance", 700, 0, 1, false, 0, hero, "R"));
-					Spells[Spells.Count-1].TargetDead = false;
-				}
 				else if (hero.ChampionName == "Kassadin")
 					Spells.Add(new SpellData("RiftWalk", 700, 0, 0, false, 0, hero, "R"));
 				else if (hero.ChampionName == "Katarina")
@@ -66,16 +63,9 @@ namespace WhereDidHeGo
 				else if (hero.ChampionName == "Lissandra")
 					Spells.Add(new SpellData("LissandraE", 700, 0, 0, false, 0, hero, "E"));
 				else if (hero.ChampionName == "MasterYi")
-				{
 					Spells.Add(new SpellData("AlphaStrike", 600, 0, 0.9f, false, 0, hero, "Q"));
-					Spells[Spells.Count - 1].TargetDead = false;
-				}
 				else if (hero.ChampionName == "Shaco")
-				{
 					Spells.Add(new SpellData("Deceive", 400, 0, 0, false, 0, hero, "Q"));
-					Spells[Spells.Count-1].OutOfBush = false;
-					shacoIndex = Spells.Count - 1;
-				}
 				else if (hero.ChampionName == "Talon")
 					Spells.Add(new SpellData("TalonCutthroat", 700, 0, 0, false, 0, hero, "E"));
 				else if (hero.ChampionName == "Tryndamere")
@@ -94,6 +84,15 @@ namespace WhereDidHeGo
 			}
 			if (Spells.Count > 0)
 			{
+				for (int i = 0; i < Spells.Count; i++)
+				{
+					if (Spells[i].Name == "Deceive") 
+					{
+						shacoIndex = i;
+						Spells[i].OutOfBush = false;
+					}
+					else if (Spells[i].Name == "AlphaStrike" || Spells[i].Name == "FioraDance") Spells[i].TargetDead = false;
+				}
 				Config = new Menu("Where Did He Go", "Where Did He Go", true);
 				Config.AddSubMenu(new Menu("Settings", "Settings"));
 				Config.SubMenu("Settings").AddItem(new MenuItem("wallPrediction", "Use Wall Prediction").SetValue(false));
@@ -275,7 +274,7 @@ namespace WhereDidHeGo
 		
 		private static void Game_OnCreate(GameObject sender, EventArgs args)
 		{
-			if (shacoIndex != -1 && sender.IsValid && sender.Name == "JackintheboxPoof2.troy" && !Spells[shacoIndex].Casted)
+			if (shacoIndex != -1 && sender.IsValid && sender.Name == "JackintheboxPoof2.troy" && !Spells[shacoIndex].Casted && sender.Type != GameObjectType.obj_LampBulb)
 			{
 				Spells[shacoIndex].StartPos = sender.Position;
 				Spells[shacoIndex].EndPos = sender.Position;
