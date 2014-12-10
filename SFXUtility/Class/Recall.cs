@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 
 /*
  Copyright 2014 - 2014 Nikita Bernthaler
@@ -43,9 +43,9 @@ namespace SFXUtility.Class
 
         #region Methods
 
-        public static Packet.S2C.Recall.Struct Decode(byte[] data)
+        public static RecallPacket.Struct Decode(byte[] data)
         {
-            var recall = new Packet.S2C.Recall.Struct {Status = Packet.S2C.Recall.RecallStatus.Unknown};
+            var recall = new RecallPacket.Struct {Status = RecallPacket.RecallStatus.Unknown};
             using (var reader = new BinaryReader(new MemoryStream(data)))
             {
                 reader.ReadByte();
@@ -56,15 +56,15 @@ namespace SFXUtility.Class
                 if (BitConverter.ToString(reader.ReadBytes(6)) != "00-00-00-00-00-00")
                 {
                     recall.Status = BitConverter.ToString(reader.ReadBytes(3)) != "00-00-00"
-                        ? Packet.S2C.Recall.RecallStatus.TeleportStart
-                        : Packet.S2C.Recall.RecallStatus.RecallStarted;
+                        ? RecallPacket.RecallStatus.TeleportStart
+                        : RecallPacket.RecallStatus.RecallStarted;
                 }
             }
             var hero =
                 ObjectManager.Get<Obj_AI_Hero>().FirstOrDefault(h => h.IsValid && h.NetworkId == recall.UnitNetworkId);
             if (!Equals(hero, default(Obj_AI_Hero)))
             {
-                recall.Duration = recall.Status == Packet.S2C.Recall.RecallStatus.TeleportStart
+                recall.Duration = recall.Status == RecallPacket.RecallStatus.TeleportStart
                     ? 3500
                     : Utility.GetRecallTime(hero);
                 if (!T.ContainsKey(recall.UnitNetworkId))
@@ -79,15 +79,15 @@ namespace SFXUtility.Class
                     {
                         if (Environment.TickCount - T[recall.UnitNetworkId] > recall.Duration - 150)
                         {
-                            recall.Status = recall.Status == Packet.S2C.Recall.RecallStatus.TeleportStart
-                                ? Packet.S2C.Recall.RecallStatus.TeleportEnd
-                                : Packet.S2C.Recall.RecallStatus.RecallFinished;
+                            recall.Status = recall.Status == RecallPacket.RecallStatus.TeleportStart
+                                ? RecallPacket.RecallStatus.TeleportEnd
+                                : RecallPacket.RecallStatus.RecallFinished;
                         }
                         else
                         {
-                            recall.Status = recall.Status == Packet.S2C.Recall.RecallStatus.TeleportStart
-                                ? Packet.S2C.Recall.RecallStatus.TeleportAbort
-                                : Packet.S2C.Recall.RecallStatus.RecallAborted;
+                            recall.Status = recall.Status == RecallPacket.RecallStatus.TeleportStart
+                                ? RecallPacket.RecallStatus.TeleportAbort
+                                : RecallPacket.RecallStatus.RecallAborted;
                         }
 
                         T[recall.UnitNetworkId] = 0;
