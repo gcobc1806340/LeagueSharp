@@ -179,7 +179,7 @@ namespace SFXUtility.Feature
 					_trackers.Menu.AddSubMenu(Menu);
 
 					foreach (
-						Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValid)
+						Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValid && hero.IsEnemy)
 					)
 					{
 						_recalls.Add(new Recall(hero));
