@@ -64,8 +64,6 @@
     <Compile Include="Class\Chat.cs" />
     <Compile Include="Class\HeroSpell.cs" />
     <Compile Include="Class\Item.cs" />
-    <Compile Include="Class\Recall.cs" />
-    <Compile Include="Class\RecallPacket.cs" />
     <Compile Include="Class\Smite.cs" />
     <Compile Include="Feature\Activators\Activators.cs" />
     <Compile Include="Feature\AutoLeveler.cs" />
