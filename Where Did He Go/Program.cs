@@ -26,14 +26,8 @@ namespace WhereDidHeGo
 		{
 			foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValid && hero.IsEnemy))
 			{
-				foreach (SpellDataInst spell in hero.SummonerSpellbook.Spells)
-				{
-					if (spell.Name.Contains("flash"))
-					{
-						Spells.Add(new SpellData("summonerflash", 400, 0, 0, false, 0, hero, "Flash"));
-						break;
-					}
-				}
+				if (hero.GetSpellSlot("summonerflash") != SpellSlot.Unknown)
+					Spells.Add(new SpellData("summonerflash", 400, 0, 0, false, 0, hero, "Flash"));
 				if (hero.ChampionName ==  "Aatrox")
 					Spells.Add(new SpellData("AatroxQ", 650, 275, 1, false, 0, hero, "Q"));
 				else if (hero.ChampionName ==  "Ahri")
@@ -172,11 +166,11 @@ namespace WhereDidHeGo
 				{
 					vayneUltEndTick = ((float)Environment.TickCount/1000) + 6 + 2*args.Level;
 					return;
-				}
+				}				
 				
 				for (int i = 0; i < Spells.Count; i++)
 				{
-					if (args.SData.Name == Spells[i].Name)
+					if (args.SData.Name == Spells[i].Name && ((Obj_AI_Hero)sender).ChampionName == Spells[i].CastingHero.ChampionName)
 					{
 						if (Spells[i].Name == "VayneTumble" && ((float)Environment.TickCount/1000) >= vayneUltEndTick) return;
 						if (Spells[i].Name == "Deceive") Spells[i].OutOfBush = false;
