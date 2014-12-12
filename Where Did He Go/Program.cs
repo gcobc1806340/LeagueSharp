@@ -170,7 +170,7 @@ namespace WhereDidHeGo
 			{
 				if (vayneUltEndTick > 0 && args.SData.Name == "vayneinquisition")
 				{
-					vayneUltEndTick = Game.Time + 6 + 2*args.Level;
+					vayneUltEndTick = ((float)Environment.TickCount/1000) + 6 + 2*args.Level;
 					return;
 				}
 				
@@ -178,7 +178,7 @@ namespace WhereDidHeGo
 				{
 					if (args.SData.Name == Spells[i].Name)
 					{
-						if (Spells[i].Name == "VayneTumble" && Game.Time >= vayneUltEndTick) return;
+						if (Spells[i].Name == "VayneTumble" && ((float)Environment.TickCount/1000) >= vayneUltEndTick) return;
 						if (Spells[i].Name == "Deceive") Spells[i].OutOfBush = false;
 						if (Spells[i].Name == "LeblancSlideM")
 						{
@@ -216,60 +216,11 @@ namespace WhereDidHeGo
 							SetNormalEndPosition(i,args);
 						}
 						Spells[i].Casted = true;
-						Spells[i].TimeCasted = Game.Time;
+						Spells[i].TimeCasted = ((float)Environment.TickCount/1000);
 						break;
 					}
 				}
-			}
-			
-//			int index = 0;
-//			foreach (SpellData spell in Spells)
-//			{
-//				if (args.SData.Name == spell.Name)
-//				{
-//					if (spell.Name == "VayneTumble" && Game.Time >= vayneUltEndTick) return;
-//					if (spell.Name == "Deceive") spell.OutOfBush = false;
-//					if (spell.Name == "LeblancSlideM")
-//					{
-//						Spells[index - 2].Casted = false;
-//						spell.StartPos = Spells[index - 2].StartPos;
-//						SetNormalEndPosition(spell,args);
-//					}
-//					else if (spell.Name == "leblancslidereturn" || spell.Name == "leblancslidereturnm")
-//					{
-//						if (spell.Name == "leblancslidereturn")
-//						{
-//							Spells[index - 1].Casted = false;
-//							Spells[index + 1].Casted = false;
-//							Spells[index + 2].Casted = false;
-//						}
-//						else
-//						{
-//							Spells[index - 3].Casted = false;
-//							Spells[index - 2].Casted = false;
-//							Spells[index - 1].Casted = false;
-//						}
-//						spell.StartPos = args.Start;
-//						spell.EndPos = Spells[index - 1].StartPos;
-//					}
-//					else if (spell.Name == "FioraDance" || spell.Name == "AlphaStrike")
-//					{
-//						spell.Target = args.Target;
-//						spell.TargetDead = false;
-//						spell.StartPos = args.Start;
-//						spell.EndPos = spell.Target.Position;
-//					}
-//					else
-//					{
-//						spell.StartPos = args.Start;
-//						SetNormalEndPosition(spell,args);
-//					}
-//					spell.Casted = true;
-//					spell.TimeCasted = (int)Game.Time;
-//				}
-//				index++;
-//			}
-//		}
+			}			
 		}
 		
 		private static void Game_OnCreate(GameObject sender, EventArgs args)
@@ -279,7 +230,7 @@ namespace WhereDidHeGo
 				Spells[shacoIndex].StartPos = sender.Position;
 				Spells[shacoIndex].EndPos = sender.Position;
 				Spells[shacoIndex].Casted = true;
-				Spells[shacoIndex].TimeCasted = Game.Time;
+				Spells[shacoIndex].TimeCasted = ((float)Environment.TickCount/1000);
 				Spells[shacoIndex].OutOfBush = true;
 			}
 		}
@@ -294,7 +245,7 @@ namespace WhereDidHeGo
 					int timevis = Config.Item("displayTimeVisible").GetValue<Slider>().Value;
 					if ((Spells[i].Name == "FioraDance" || Spells[i].Name == "AlphaStrike") && !Spells[i].TargetDead)
 					{
-						if (Game.Time > Spells[i].TimeCasted + Spells[i].Delay + 0.2f) Spells[i].Casted = false;
+						if (((float)Environment.TickCount/1000) > Spells[i].TimeCasted + Spells[i].Delay + 0.2f) Spells[i].Casted = false;
 						else if (Spells[i].Target.IsDead)
 						{
 							Vector3 tempPos = Spells[i].EndPos;
@@ -304,38 +255,13 @@ namespace WhereDidHeGo
 						}
 						else Spells[i].EndPos = Spells[i].Target.Position;
 					}
-					else if (Spells[i].CastingHero.IsDead || (!Spells[i].CastingHero.IsVisible && Game.Time > Spells[i].TimeCasted + timenovis + Spells[i].Delay) ||
-					         (Spells[i].CastingHero.IsVisible && Game.Time > Spells[i].TimeCasted + timevis + Spells[i].Delay))
+					else if (Spells[i].CastingHero.IsDead || (!Spells[i].CastingHero.IsVisible && ((float)Environment.TickCount/1000) > Spells[i].TimeCasted + timenovis + Spells[i].Delay) ||
+					         (Spells[i].CastingHero.IsVisible && ((float)Environment.TickCount/1000) > Spells[i].TimeCasted + timevis + Spells[i].Delay))
 						Spells[i].Casted = false;
-					else if (!Spells[i].OutOfBush && Spells[i].CastingHero.IsVisible && Game.Time > Spells[i].TimeCasted + Spells[i].Delay)
+					else if (!Spells[i].OutOfBush && Spells[i].CastingHero.IsVisible && ((float)Environment.TickCount/1000) > Spells[i].TimeCasted + Spells[i].Delay)
 						Spells[i].EndPos = Spells[i].CastingHero.Position;
 				}
 			}
-//			foreach (SpellData spell in Spells)
-//			{
-//				if (spell.Casted)
-//				{
-//					int timenovis = Config.Item("displayTime").GetValue<Slider>().Value;
-//					int timevis = Config.Item("displayTimeVisible").GetValue<Slider>().Value;
-//					if ((spell.Name == "FioraDance" || spell.Name == "AlphaStrike") && !spell.TargetDead)
-//					{
-//						if (Game.Time > spell.TimeCasted + spell.Delay + 0.2f) spell.Casted = false;
-//						else if (spell.Target.IsDead)
-//						{
-//							Vector3 tempPos = spell.EndPos;
-//							spell.EndPos = spell.StartPos;
-//							spell.StartPos = tempPos;
-//							spell.TargetDead = true;
-//						}
-//						else spell.EndPos = spell.Target.Position;
-//					}
-//					else if (spell.CastingHero.IsDead || (!spell.CastingHero.IsVisible && Game.Time > spell.TimeCasted + timenovis + spell.Delay) ||
-//					         (spell.CastingHero.IsVisible && Game.Time > spell.TimeCasted + timevis + spell.Delay))
-//						spell.Casted = false;
-//					else if (!spell.OutOfBush && spell.CastingHero.IsVisible && Game.Time > spell.TimeCasted + spell.Delay)
-//						spell.EndPos = spell.CastingHero.Position;
-//				}
-//			}
 		}
 		
 		private static void Drawing_OnDraw(EventArgs args)
@@ -347,7 +273,7 @@ namespace WhereDidHeGo
 					Vector2 lineStartPos = Drawing.WorldToScreen(Spells[i].StartPos);
 					Vector2 lineEndPos = Drawing.WorldToScreen(Spells[i].EndPos);
 					float size = 100;
-					if (Spells[i].Radius > 0 && Game.Time < Spells[i].TimeCasted + Spells[i].Delay) size = Spells[i].Radius;
+					if (Spells[i].Radius > 0 && ((float)Environment.TickCount/1000) < Spells[i].TimeCasted + Spells[i].Delay) size = Spells[i].Radius;
 					if (Spells[i].OutOfBush) Utility.DrawCircle(Spells[i].EndPos, Spells[i].MaxRange, Color.Red);
 					else
 					{
@@ -361,27 +287,6 @@ namespace WhereDidHeGo
 					Drawing.DrawText(lineEndPos.X + offset + 1, lineEndPos.Y - offset, Color.Bisque,infoText);
 				}
 			}
-//			foreach (SpellData spell in Spells)
-//			{
-//				if (spell.Casted)
-//				{
-//					var lineStartPos = Drawing.WorldToScreen(spell.StartPos);
-//					var lineEndPos = Drawing.WorldToScreen(spell.EndPos);
-//					float size = 100;
-//					if (spell.Radius > 0 && Game.Time < spell.TimeCasted + spell.Delay) size = spell.Radius;
-//					if (spell.OutOfBush) Utility.DrawCircle(spell.EndPos, spell.MaxRange, Color.Red);
-//					else
-//					{
-//						Utility.DrawCircle(spell.EndPos, size, Color.White);
-//						Drawing.DrawLine(lineStartPos,lineEndPos, 2.0f, Color.Blue);
-//					}
-//					int offset = 30;
-//					string infoText = spell.CastingHero.ChampionName + " " + spell.ShortName;
-//					Drawing.DrawLine(lineEndPos.X, lineEndPos.Y, lineEndPos.X + offset, lineEndPos.Y - offset, 1.0f, Color.Red);
-//					Drawing.DrawLine(lineEndPos.X + offset, lineEndPos.Y - offset, lineEndPos.X + offset + 6 * infoText.Length, lineEndPos.Y - offset, 1.0f, Color.Red);
-//					Drawing.DrawText(lineEndPos.X, lineEndPos.Y, Color.Bisque,infoText);
-//				}
-//			}
 		}
 	}
 }
